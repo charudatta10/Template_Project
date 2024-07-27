@@ -25,7 +25,7 @@ init:
     #!pwsh
     git init
     New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirement.yaml"
-    New-Item -ItemType "directory" -Path "archives", "docs", "src", "test"
+    New-Item -ItemType "directory" -Path "archives", "docs", "src", "tests"
     New-Item -ItemType "file" -Path .\* -Name "__init__.py" -ErrorAction SilentlyContinue
     gig gen python > .gitignore 
     u
@@ -33,15 +33,15 @@ init:
 config:
     dynaconf init -f json 
 
-doc:
+docs:
     #!pwsh
     conda activate blog
-    p -m mkdocs new .
+    python -m mkdocs new .
     
 readme:
     #!pwsh
     conda activate w
-    python C:/Users/chaitrali/Documents/GitHub/readme-generator/main.py
+    python C:/Users/chaitrali/Documents/GitHub/readmeGen/main.py
 
 commit message="init":
     #!pwsh
@@ -51,6 +51,10 @@ commit message="init":
 exe file_name:
     #!pwsh
     pyintsaller src/{{file_name}} -onefile
+
+tests:
+    #!pwsh
+    python -m unittest discover -s tests
 
 #alias b := build
 #build: 
