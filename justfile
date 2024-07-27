@@ -39,7 +39,9 @@ doc:
     p -m mkdocs new .
     
 readme:
-    python C:/Users/chaitrali/Documents/GitHub/readme-generator
+    #!pwsh
+    conda activate w
+    python C:/Users/chaitrali/Documents/GitHub/readme-generator/main.py
 
 commit message="init":
     #!pwsh
