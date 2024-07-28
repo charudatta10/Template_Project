@@ -50,7 +50,7 @@ commit message="init":
 
 exe file_name:
     #!pwsh
-    pyintsaller src/{{file_name}} -onefile
+    pyinstaller src/{{file_name}} --onefile
 
 tests:
     #!pwsh
