@@ -17,7 +17,6 @@
 #    email contact: 152109007c@gmailcom
 
 set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
-set dotenv-load := true
 
 default:
     @just --choose
@@ -26,15 +25,17 @@ default:
 init:
     #!pwsh
     git init
-    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirement.json", ".json"
+    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirements.json", "config.json"
     New-Item -ItemType "directory" -Path "archives", "docs", "src", "tests"
     New-Item -ItemType "file" -Path .\* -Name "__init__.py" -ErrorAction SilentlyContinue
     gig gen python > .gitignore 
-    u
+    Add-LicenseHeader
 
-# add configuration files
+# set configuration variables
 config:
-    dynaconf init -f json 
+    #!pwsh
+    config.json >> .gitignore
+    Set-EnvFromJson
 
 # add documentation to repo
 docs:
@@ -46,7 +47,7 @@ docs:
 readme:
     #!pwsh
     conda activate w
-    python C:/Users/chaitrali/Documents/GitHub/readmeGen/main.py
+    python C:/Users/$env:username/Documents/GitHub/readmeGen/main.py
 
 # version control repo with git
 commit message="init":
