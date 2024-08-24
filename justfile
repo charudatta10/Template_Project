@@ -26,11 +26,15 @@ default:
 init:
     #!pwsh
     git init
-    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirement.yaml", ".env"
+    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirement.json", ".json"
     New-Item -ItemType "directory" -Path "archives", "docs", "src", "tests"
     New-Item -ItemType "file" -Path .\* -Name "__init__.py" -ErrorAction SilentlyContinue
     gig gen python > .gitignore 
     u
+
+# add configuration files
+config:
+    dynaconf init -f json 
 
 # add documentation to repo
 docs:
