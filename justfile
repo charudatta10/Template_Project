@@ -25,9 +25,8 @@ default:
 init:
     #!pwsh
     git init
-    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirements.json", "config.json"
+    New-Item -ItemType "file" -Path ".gitattribute", "main.py", "requirements.yaml", "config.json"
     New-Item -ItemType "directory" -Path "docs", "src", "tests"
-    New-Item -ItemType "file" -Path .\* -Name "__init__.py" -ErrorAction SilentlyContinue
     gig gen python > .gitignore 
     Add-LicenseHeader
     7z a archives.7z .gitignore
