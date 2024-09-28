@@ -31,11 +31,6 @@ init:
     Add-LicenseHeader
     7z a archives.7z .gitignore
 
-# set configuration variables
-config:
-    #!pwsh
-    SetEnvVar
-
 # add documentation to repo
 docs:
     #!pwsh
@@ -70,7 +65,7 @@ run:
     python run.py
 
 # exit just file
-exit:
+quit:
     #!pwsh
     write-Host "Copyright © 2024 Charudatta"
     Write-Host "email contact: 152109007c@gmailcom"
