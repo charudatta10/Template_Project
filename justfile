@@ -25,7 +25,7 @@ default:
 init:
     #!pwsh
     git init
-    New-Item -ItemType "file" -Path ".env", ".gitattribute", "main.py", "requirements.txt"
+    New-Item -ItemType "file" -Path ".env", ".gitattribute", "run.py", "requirements.txt"
     New-Item -ItemType "directory" -Path "docs", "src", "tests"
     gig gen python > .gitignore 
     Add-LicenseHeader
@@ -63,6 +63,19 @@ exe file_name:
 tests:
     #!pwsh
     python -m unittest discover -s tests
+
+# run project
+run:
+    #!pwsh
+    python run.py
+
+# exit just file
+exit:
+    #!pwsh
+    write-Host "Copyright © 2024 Charudatta"
+    Write-Host "email contact: 152109007c@gmailcom"
+    Write-Host "Exiting Folder" 
+    [System.IO.Path]::GetFileName($(Get-Location))
 
 # Add custom tasks, enviroment variables
 
