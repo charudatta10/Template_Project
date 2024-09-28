@@ -25,7 +25,7 @@ default:
 init:
     #!pwsh
     git init
-    New-Item -ItemType "file" -Path ".env", ".gitattribute", "main.py", "requirements.yaml"
+    New-Item -ItemType "file" -Path ".env", ".gitattribute", "main.py", "requirements.txt"
     New-Item -ItemType "directory" -Path "docs", "src", "tests"
     gig gen python > .gitignore 
     Add-LicenseHeader
