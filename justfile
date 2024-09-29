@@ -18,6 +18,8 @@
 
 set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
 
+env_path := "C:/Users/$env:username/Documents/GitHub"
+
 default:
     @just --choose
 
@@ -37,11 +39,11 @@ docs:
     conda activate blog
     python -m mkdocs new .
 
-# genearte and readme to repo    
+# generate and readme to repo    
 readme:
     #!pwsh
     conda activate w
-    python C:/Users/$env:username/Documents/GitHub/readmeGen/main.py
+    python {{env_path}}/readmeGen/main.py
 
 # version control repo with git
 commit message="init":
@@ -71,6 +73,47 @@ quit:
     Write-Host "email contact: 152109007c@gmailcom"
     Write-Host "Exiting Folder" 
     [System.IO.Path]::GetFileName($(Get-Location))
+
+# install dependencies
+install:
+    #!pwsh
+    pip install -r requirements.txt
+
+# lint code
+lint:
+    #!pwsh
+    pylint src/
+
+# format code
+format:
+    #!pwsh
+    black src/
+
+# run security checks
+security:
+    #!pwsh
+    bandit -r src/
+
+# build documentation
+build-docs:
+    #!pwsh
+    mkdocs build
+
+# deploy application
+deploy:
+    #!pwsh
+    scp -r src/ user@server:/path/to/deploy
+
+# clean up
+clean:
+    #!pwsh
+    Remove-Item -Recurse -Force dist, build, *.egg-info
+
+# check for updates
+update:
+    #!pwsh
+    pip list --outdated
+
 
 # Add custom tasks, enviroment variables
 
