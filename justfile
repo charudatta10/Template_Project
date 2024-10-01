@@ -83,6 +83,7 @@ install:
 lint:
     #!pwsh
     pylint src/
+    flake8 src/
 
 # format code
 format:
@@ -102,7 +103,13 @@ build-docs:
 # deploy application
 deploy:
     #!pwsh
-    scp -r src/ user@server:/path/to/deploy
+    git pull origin main --force
+    @test
+    @security
+    @lint
+    @format
+    @commit
+    git push -u origin main
 
 # clean up
 clean:
