@@ -26,7 +26,8 @@ default:
 # create files and directories
 init:
     #!pwsh
-    Initialize-Project
+    . New-Project.ps1
+    New-Project
 
 # add documentation to repo
 docs:
