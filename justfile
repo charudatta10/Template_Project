@@ -26,12 +26,7 @@ default:
 # create files and directories
 init:
     #!pwsh
-    git init
-    New-Item -ItemType "file" -Path ".env", ".gitattribute", "run.py", "requirements.txt"
-    New-Item -ItemType "directory" -Path "docs", "src", "tests"
-    gig gen python > .gitignore 
-    Add-LicenseHeader
-    7z a archives.7z .gitignore
+    Initialize-Project
 
 # add documentation to repo
 docs:
@@ -111,6 +106,25 @@ deploy:
     @commit
     git push -u origin main
 
+# setup logging
+setup-logging:
+    #!pwsh
+    New-Item -ItemType "file" -Path "src/logging_config.py"
+    Add-Content -Path "src/logging_config.py" -Value @'
+import logging
+
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler("app.log"),
+                              logging.StreamHandler()])
+logger = logging.getLogger(__name__)
+'@
+
+# view logs
+view-logs:
+    #!pwsh
+    Get-Content -Path "app.log" -Tail 10
+
 # clean up
 clean:
     #!pwsh
@@ -121,6 +135,10 @@ update:
     #!pwsh
     pip list --outdated
 
+# project mangement add task and todos 
+todos:
+    #!pwsh
+    wic
 
 # Add custom tasks, enviroment variables
 
