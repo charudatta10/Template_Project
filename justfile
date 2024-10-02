@@ -26,8 +26,7 @@ default:
 # create files and directories
 init:
     #!pwsh
-    . New-Project.ps1
-    New-Project
+    New-Project.ps1
 
 # add documentation to repo
 docs:
@@ -66,10 +65,7 @@ run:
 quit:
     #!pwsh
     write-Host "Copyright © 2024 Charudatta"
-    Write-Host "email contact: 152109007c@gmailcom"
-    Write-Host "Exiting Folder" 
-    [System.IO.Path]::GetFileName($(Get-Location))
-
+    
 # install dependencies
 install:
     #!pwsh
@@ -100,7 +96,7 @@ build-docs:
 deploy:
     #!pwsh
     git pull origin main --force
-    @test
+    @test 
     @security
     @lint
     @format
@@ -110,16 +106,7 @@ deploy:
 # setup logging
 setup-logging:
     #!pwsh
-    New-Item -ItemType "file" -Path "src/logging_config.py"
-    Add-Content -Path "src/logging_config.py" -Value @'
-import logging
-
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.FileHandler("app.log"),
-                              logging.StreamHandler()])
-logger = logging.getLogger(__name__)
-'@
+    Add-Logger.ps1
 
 # view logs
 view-logs:
@@ -140,6 +127,10 @@ update:
 todos:
     #!pwsh
     wic
+
+timeit cmd=start:
+    #!pwsh
+    timetrace {{cmd}} # start, stop, list
 
 # Add custom tasks, enviroment variables
 
