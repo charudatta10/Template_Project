@@ -26,19 +26,31 @@ default:
 # create files and directories
 init:
     #!pwsh
-    New-Project.ps1
+    try {
+        .\New-Project.ps1
+    } catch {
+        Write-Error "Failed to initialize the project: $_"
+    }
 
 # add documentation to repo
 docs:
     #!pwsh
     conda activate blog
-    python -m mkdocs new .
+    if ($?) {
+        python -m mkdocs new .
+    } else {
+        Write-Error "Failed to activate conda environment 'blog'"
+    }
 
 # generate and readme to repo    
 readme:
     #!pwsh
     conda activate w
-    python {{env_path}}/readmeGen/main.py
+    if ($?) {
+        python {{env_path}}/readmeGen/main.py
+    } else {
+        Write-Error "Failed to activate conda environment 'w'"
+    }
 
 # version control repo with git
 commit message="init":
@@ -54,7 +66,13 @@ exe file_name:
 # run python unit test 
 tests:
     #!pwsh
-    python -m unittest discover -s tests
+    just install
+    conda activate webdev
+    if ($?) {
+        python -m unittest discover -s tests
+    } else {
+        Write-Error "Failed to activate conda environment 'webdev'"
+    }
 
 # run project
 run:
@@ -64,22 +82,18 @@ run:
 # exit just file
 quit:
     #!pwsh
-    write-Host "Copyright © 2024 Charudatta"
+    Write-Host "Copyright © 2024 Charudatta"
     
 # install dependencies
 install:
     #!pwsh
     pip install -r requirements.txt
 
-# lint code
-lint:
+# lint and format code
+lint-format:
     #!pwsh
     pylint src/
     flake8 src/
-
-# format code
-format:
-    #!pwsh
     black src/
 
 # run security checks
@@ -96,17 +110,16 @@ build-docs:
 deploy:
     #!pwsh
     git pull origin main --force
-    @test 
-    @security
-    @lint
-    @format
-    @commit
+    just tests
+    just security
+    just lint-format
+    just commit
     git push -u origin main
 
 # setup logging
 setup-logging:
     #!pwsh
-    Add-Logger.ps1
+    .\Add-Logger.ps1
 
 # view logs
 view-logs:
@@ -123,14 +136,31 @@ update:
     #!pwsh
     pip list --outdated
 
-# project mangement add task and todos 
+# project management add task and todos 
 todos:
     #!pwsh
     wic
 
-timeit cmd=start:
+timeit cmd="start":
     #!pwsh
     timetrace {{cmd}} # start, stop, list
+
+# setup environment
+setup-environment:
+    #!pwsh
+    conda create --name myenv python=3.9
+
+# deploy production environment
+deploy-production:
+    #!pwsh
+    just setup-environment
+    just install
+    just tests
+    just security
+    just lint-format
+    just build-docs
+    just commit
+    git push -u origin main
 
 # Add custom tasks, enviroment variables
 
